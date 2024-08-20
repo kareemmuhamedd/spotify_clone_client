@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_remote_repository.g.dart';
+
 @riverpod
-AuthRemoteRepository authRemoteRepository(AuthRemoteRepositoryRef ref){
+AuthRemoteRepository authRemoteRepository(AuthRemoteRepositoryRef ref) {
   return AuthRemoteRepository();
 }
 
@@ -62,7 +63,8 @@ class AuthRemoteRepository {
       if (response.statusCode != 200) {
         return Left(AppFailure(resBodyMap['detail']));
       }
-      return Right(UserModel.fromMap(resBodyMap));
+      return Right(UserModel.fromMap(resBodyMap['user'])
+          .copyWith(token: resBodyMap['token']));
     } catch (e) {
       return Left(AppFailure(e.toString()));
     }
