@@ -1,13 +1,12 @@
 import 'package:client/core/widgets/loader.dart';
 import 'package:client/features/auth/view/screens/signup_screen.dart';
 import 'package:client/features/auth/viewmodel/auth_viewmodel.dart';
+import 'package:client/features/home/view/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpdart/fpdart.dart';
 import '../../../../core/theme/app_palette.dart';
 import '../../../../core/utils/snack_bar.dart';
 import '../../../../core/widgets/custom_field.dart';
-import '../../repositories/auth_remote_repository.dart';
 import '../widgets/auth_gradient_button.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -31,17 +30,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = ref.watch(authViewModelProvider)?.isLoading == true;
+    final isLoading = ref.watch(
+      authViewModelProvider.select(
+        (val) => val?.isLoading == true,
+      ),
+    );
     ref.listen(authViewModelProvider, (_, next) {
       next?.when(
         data: (data) {
-         // TODO navigate to home screen
-         //  Navigator.push(
-         //    context,
-         //    MaterialPageRoute(
-         //      builder: (context) => const LoginScreen(),
-         //    ),
-         //  );
+           Navigator.pushAndRemoveUntil(
+             context,
+             MaterialPageRoute(
+               builder: (context) => const HomeScreen(),
+             ),(_) => false,
+           );
         },
         error: (error, st) {
           showSnackBar(
@@ -88,15 +90,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           buttonText: 'Sign in',
                           onTap: () async {
                             if (formKey.currentState!.validate()) {
-                              final res = await AuthRemoteRepository().login(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              );
-                              final val = switch (res) {
-                                Left(value: final l) => l,
-                                Right(value: final r) => r,
-                              };
-                              print(val);
+                              await ref
+                                  .read(authViewModelProvider.notifier)
+                                  .loginUser(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                  );
                             }
                           },
                         ),
