@@ -31,7 +31,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       title: 'Music App',
       theme: AppTheme.darkThemeMode,
-      home: currentUser != null ? const SignupScreen() : const UploadSongScreen(),
+      home: currentUser == null ? const SignupScreen() : const UploadSongScreen(),
     );
   }
 }
