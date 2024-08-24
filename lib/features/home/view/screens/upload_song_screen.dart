@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:client/core/theme/app_palette.dart';
 import 'package:client/core/utils/pick_files.dart';
 import 'package:client/core/widgets/custom_field.dart';
+import 'package:client/features/home/repositories/home_repository.dart';
 import 'package:client/features/home/view/widgets/audio_wave.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
@@ -55,7 +56,12 @@ class _UploadSongScreenState extends ConsumerState<UploadSongScreen> {
         title: const Text('Upload Song'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await HomeRepository().uploadSong(
+                selectedImage!,
+                selectedAudio!,
+              );
+            },
             icon: const Icon(
               Icons.check,
             ),
