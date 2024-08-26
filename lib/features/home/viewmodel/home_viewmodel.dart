@@ -6,8 +6,22 @@ import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/utils/color_converter.dart';
+import '../model/song_model.dart';
 
 part 'home_viewmodel.g.dart';
+
+@riverpod
+Future<List<SongModel>> getAllSongs(GetAllSongsRef ref) async {
+  final token = ref.watch(currentUserNotifierProvider)!.token;
+  final res = await ref.watch(homeRepositoryProvider).getAllSongs(
+        token: token,
+      );
+  final val = switch (res) {
+    Left(value: final l) => throw l.message,
+    Right(value: final r) => r,
+  };
+  return val;
+}
 
 @riverpod
 class HomeViewModel extends _$HomeViewModel {
