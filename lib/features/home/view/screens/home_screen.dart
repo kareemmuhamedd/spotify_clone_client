@@ -2,6 +2,7 @@ import 'package:client/core/theme/app_palette.dart';
 import 'package:client/features/home/view/screens/songs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../widgets/music_slab.dart';
 import 'library_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -21,7 +22,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[selectedIndex],
+      body: Stack(
+        children: [
+          _screens[selectedIndex],
+          const Positioned(
+            bottom: 0,
+            child: MusicSlab(),
+          )
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
         onTap: (index) {

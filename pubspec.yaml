@@ -43,9 +43,11 @@ dependencies:
   shared_preferences: ^2.3.2
   dotted_border: ^2.1.0
   flex_color_picker: ^3.5.1
-  file_picker: ^8.1.2
+#  file_picker: ^8.1.2
+  file_picker: ^8.0.7
   audio_waveforms: ^1.0.5
   permission_handler: ^11.3.1
+  just_audio: ^0.9.39
 
 
 dev_dependencies:
