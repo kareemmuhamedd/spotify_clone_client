@@ -15,6 +15,7 @@ class CurrentSongNotifier extends _$CurrentSongNotifier {
   }
 
   void updateSong(SongModel song) async {
+    audioPlayer?.dispose();
     audioPlayer = AudioPlayer();
     await audioPlayer!.setUrl(song.song_url);
     final audioSource = AudioSource.uri(
@@ -44,5 +45,13 @@ class CurrentSongNotifier extends _$CurrentSongNotifier {
     isPlaying = !isPlaying;
     // huh here we only update the state for make the riverbod to rebuild the widget for make the play pause button to change
     state = state?.copyWith(hex_code: state?.hex_code);
+  }
+
+  void seek(double val) {
+    audioPlayer!.seek(
+      Duration(
+        milliseconds: (val * audioPlayer!.duration!.inMilliseconds).toInt(),
+      ),
+    );
   }
 }
